@@ -9,8 +9,7 @@ int main() {
     int opcao, num_paginas;
     bool sair = false;
     char titulo[50], autor[50];
-    int linhas;
-    linhas = verificarArquivo();
+    int linhas = verificarArquivo();
 
     while (!sair) {
         opcao = menu();

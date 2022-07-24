@@ -6,15 +6,13 @@ int verificarArquivo() {
         fclose(file);
         return count;
     }else {
-      char c;
-      file = fopen("database.txt", "rt");
-      for (c = getc(file); c != EOF; c = getc(file)) {
-        if (c == '\n') {
+        file = fopen("database.txt", "rt");
+        char buf[50];
+        while(fgets(buf,50,file) != NULL) {
             count++;
         }
-      }
-      fclose(file);
-      return count;
+        fclose(file);
+        return count;
     }
 }
 
@@ -55,8 +53,9 @@ int listar(int linhas) {
 int buscar(char *search,int linhas) {
     char buf[100];
     FILE *arq;
-    int count;
+    int count,encontrados;
     arq = fopen("database.txt", "rt");
+     printf("\nlivros encontrados: \n\n");
     //percorrendo o arquivo linha a linha 
     for (int i=0; i < linhas; i++) {
         count=0;
@@ -72,11 +71,16 @@ int buscar(char *search,int linhas) {
             }
         }
         if (count == strlen(search)) {
-            printf("\nlivro encontrado: %s\n", buf);
-            return 0;
+            printf("%s", buf);
+            encontrados++;
         }
     }
-    printf("livro nao encontrado!");
+    if(encontrados == 0) {
+        printf("0\n");
+    } else {
+        printf("\ntotal de %d livros\n",encontrados);
+    }
+    return 0;
 }
 
 /*
