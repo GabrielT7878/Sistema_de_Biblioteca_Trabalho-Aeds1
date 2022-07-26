@@ -4,6 +4,14 @@
 #include <locale.h>
 #include <string.h>
 #include "funcoes.c"
+#if defined(__MINGW32__) || defined(_MSC_VER)
+#define limpar_input() fflush(stdin)
+#define limpar_tela() system("cls")
+#else
+#include <stdio_ext.h>
+#define limpar_input() __fpurge(stdin)
+#define limpar_tela() system("clear")
+#endif
 
 int main() {
     int opcao, num_paginas;
@@ -27,7 +35,7 @@ int main() {
         case 2:
             // parte em teste
             printf("Digite o titulo do livro:\n");
-            fflush(stdin);
+            limpar_input();
             gets(titulo);
             while (strlen(titulo) > 50 ) {
             printf("\n O titulo é longo demais\n");

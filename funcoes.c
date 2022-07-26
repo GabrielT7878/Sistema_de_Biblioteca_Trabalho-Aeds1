@@ -53,19 +53,17 @@ int listar(int linhas) {
 int buscar(char *search,int linhas) {
     char buf[100];
     FILE *arq;
-    int count,encontrados;
+    int count,encontrados=0;
     arq = fopen("database.txt", "rt");
      printf("\nlivros encontrados: \n\n");
-    //percorrendo o arquivo linha a linha 
     for (int i=0; i < linhas; i++) {
         count=0;
         fgets(buf, 100, arq);
-        //percorrendo a string da linha
         for(int j=0; j < strlen(search); j++) {
             if(buf[j] == ',') {
-                j = strlen(search);
+                    break;
             }else {
-                if(buf[j] == search[j]) {
+                if(tolower(buf[j]) == tolower(search[j])) {
                     count++;
                 }
             }
@@ -83,14 +81,3 @@ int buscar(char *search,int linhas) {
     return 0;
 }
 
-/*
-pegar string da linha
-pegar o tamanho da string recebida
-while string arquivo != ',' && i < tamnhanho da string 
-continuo comparando
-se igual count ++;
-termina o loop
-se count == tamnhanho da string
-//printo o fgets// peguei e falo que falo que foi encontrado
-printar sem as virgulas
-*/
