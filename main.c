@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <locale.h>
 #include <string.h>
-#include "funcoes.c"
 #if defined(__MINGW32__) || defined(_MSC_VER)
 #define limpar_input() fflush(stdin)
 #define limpar_tela() system("cls")
@@ -12,6 +11,7 @@
 #define limpar_input() __fpurge(stdin)
 #define limpar_tela() system("clear")
 #endif
+#include "funcoes.c"
 
 int main() {
     int opcao, num_paginas;
@@ -22,24 +22,29 @@ int main() {
     while (!sair) {
         opcao = menu();
         if (opcao < 1 || opcao > 5) {
-            printf("Opção inválida!");
+            printf("Opï¿½ï¿½o invï¿½lida!");
             continue;
         }
         switch (opcao) {
         case 1:
             // buscar livro
+            limpar_tela();
+            printf("--------- Buscar Livro --------\n");
             printf("Digite o nome do Livro:\n");
             scanf("%s", titulo);
             buscar(titulo,linhas);
             break;
         case 2:
             // parte em teste
+            limpar_tela();
+            printf("--------- Adicionar Livro --------\n");
             printf("Digite o titulo do livro:\n");
             limpar_input();
             gets(titulo);
             while (strlen(titulo) > 50 ) {
-            printf("\n O titulo é longo demais\n");
+            printf("\n O titulo ï¿½ longo demais\n");
             printf("Digite o titulo do livro:\n");
+            limpar_input();
             scanf("%s", titulo);
             }
             //printf("%d", strlen(titulo));
@@ -61,7 +66,8 @@ int main() {
 
         case 4:
             // listar livros
-            printf("Os livros presentes na biblioteca são:\n");
+            limpar_tela();
+            printf("Os livros presentes na biblioteca sï¿½o:\n");
             listar(linhas);
             break;
         case 5:
