@@ -79,3 +79,42 @@ int buscar(char *pesquisa,int linhas) {
     return 0;
 }
 
+int remover(char *titulo,int *linhas) {
+    FILE *arquivo;
+    bool teste = false,encontrou = false;
+    arquivo = fopen("database.txt","rt");
+    char copiaArquivo[(*linhas)][50],aux[50];
+    memset(aux,0,50);
+    for(int i=0;i<(*linhas);i++) {
+        fgets(copiaArquivo[i],50,arquivo);
+    }
+    for(int i=0;i<(*linhas);i++) {
+        for(int j=0;copiaArquivo[i][j]!=',';j++) {
+            aux[j] = copiaArquivo[i][j];
+        }
+        if(strcmp(aux,titulo) == 0 || teste) {
+            strcpy(copiaArquivo[i],copiaArquivo[i+1]);
+            teste = true;
+            encontrou = true;
+        }
+        memset(aux,0,50);
+    }
+
+    fclose(arquivo);
+
+    if(encontrou) {
+        (*linhas)--;
+        FILE *f = fopen("database.txt", "w");
+        fclose(f);
+        f = fopen("database.txt", "a");
+        for(int i=0;i<(*linhas);i++) {
+            fprintf(f, "%s",copiaArquivo[i]);
+        }
+        fclose(f);
+        puts("removido com sucesso");
+    } else {
+        puts("livro nao encontrado");
+    }
+    return 0;
+}
+

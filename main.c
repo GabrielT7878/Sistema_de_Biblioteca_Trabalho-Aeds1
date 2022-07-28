@@ -59,9 +59,9 @@ int main() {
 
         case 3:
             printf("Digite o nome do livro a ser removido:\n");
-            scanf("%s", titulo);
-            printf("O livro %s foi removido", titulo);
-            //remover(titulo);
+            limpar_input();
+            gets(titulo);
+            remover(titulo,&linhas);
             break;
 
         case 4:
