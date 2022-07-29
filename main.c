@@ -17,6 +17,7 @@ int main() {
     int opcao, num_paginas;
     bool sair = false;
     char titulo[50], autor[50];
+    //verificar a quantidade de linhas do arquivo
     int linhas = verificarArquivo();
 
     while (!sair) {
@@ -31,11 +32,11 @@ int main() {
             limpar_tela();
             printf("--------- Buscar Livro --------\n");
             printf("Digite o nome do Livro:\n");
-            scanf("%s", titulo);
+            gets(titulo);
             buscar(titulo,linhas);
             break;
         case 2:
-            // parte em teste
+            // Adicionar Livro
             limpar_tela();
             printf("--------- Adicionar Livro --------\n");
             printf("Digite o titulo do livro:\n");
@@ -47,17 +48,16 @@ int main() {
             limpar_input();
             scanf("%s", titulo);
             }
-            //printf("%d", strlen(titulo));
             printf("Digite o nome do autor:\n");
-            fflush(stdin);
+            limpar_input();
             gets(autor);
             printf("Digite o numero de paginas:\n");
             scanf("%d", &num_paginas);
             inserir(titulo, autor, num_paginas,&linhas);
-            
             break;
 
         case 3:
+            //remover livro
             printf("Digite o nome do livro a ser removido:\n");
             limpar_input();
             gets(titulo);
@@ -65,12 +65,13 @@ int main() {
             break;
 
         case 4:
-            // listar livros
+            //listar livros
             limpar_tela();
             printf("Os livros presentes na biblioteca s�o:\n");
             listar(linhas);
             break;
         case 5:
+            //sair
              sair = true;
         default:
             break;
