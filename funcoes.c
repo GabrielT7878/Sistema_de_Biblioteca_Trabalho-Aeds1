@@ -40,12 +40,13 @@ int inserir(char *titulo, char *autor, int numeros_pag, int *linhas) {
 }
 
 int listar(int linhas) {
-    //lê o arquivo e os lista livros
+    //lista os livros
     char infLivro[50];
     int vezes;
     FILE *arquivo;
     printf("\nQuantidade: %d\n",linhas);
     arquivo = fopen("database.txt", "rt");
+    //lê o as linhas do arquivo e os lista livros
     for (int i=0; i < linhas; i++) {
         fgets(infLivro,50,arquivo);
         printf("%d - %s",i+1, infLivro);
@@ -98,38 +99,49 @@ int buscar(char *pesquisa,int linhas) {
 int remover(char *titulo,int *linhas) {
     //remove Livro e retorna a quantidade de linhas
     FILE *arquivo;
-    bool teste = false,encontrou = false;
+    bool removeu = false;
     arquivo = fopen("database.txt","rt");
     char copiaArquivo[(*linhas)][50],aux[50];
+    //esvazia a string
     memset(aux,0,50);
+    //copia as linhas do arquivo para uma matriz
     for(int i=0;i<(*linhas);i++) {
         fgets(copiaArquivo[i],50,arquivo);
     }
+    //comparar as linhas com o input do usuário
     for(int i=0;i<(*linhas);i++) {
+        //copia somente o titulo da string matriz para comparar com o input
         for(int j=0;copiaArquivo[i][j]!=',';j++) {
             aux[j] = copiaArquivo[i][j];
         }
-        if(strcmp(aux,titulo) == 0 || teste) {
+        // compara o input com titulo da linha
+        //caso forem iguais copia o titulo de baixo e sobrescreve a linha atual a ser removida
+        if(strcmp(aux,titulo) == 0 || removeu) {
             strcpy(copiaArquivo[i],copiaArquivo[i+1]);
-            teste = true;
-            encontrou = true;
+            //variavel removeu recebe true para continuar a sobrescrevendo as linhas até chegar no final
+            removeu = true;
         }
         memset(aux,0,50);
     }
 
     fclose(arquivo);
 
-    if(encontrou) {
+    if(removeu) {
+        //atualiza o numero de linhas
         (*linhas)--;
+        //reseta o arquivo "database"
         FILE *f = fopen("database.txt", "w");
         fclose(f);
+        //abre o arquivo novamente para escrever a base de livros atualizado com o livro 
         f = fopen("database.txt", "a");
+        //copia a matriz de livros para o arquivo
         for(int i=0;i<(*linhas);i++) {
             fprintf(f, "%s",copiaArquivo[i]);
         }
         fclose(f);
         puts("removido com sucesso");
     } else {
+        //caso removeu estiver falso, o livro nao foi encontrado e printa o erro na tela
         puts("livro nao encontrado");
     }
     return 0;
