@@ -32,6 +32,7 @@ int main() {
             limpar_tela();
             printf("--------- Buscar Livro --------\n");
             printf("Digite o nome do Livro:\n");
+            limpar_input();
             gets(titulo);
             buscar(titulo,linhas);
             break;
