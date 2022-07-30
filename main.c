@@ -59,6 +59,7 @@ int main() {
 
         case 3:
             //remover livro
+            limpar_tela();
             printf("Digite o nome do livro a ser removido:\n");
             limpar_input();
             gets(titulo);
@@ -80,3 +81,4 @@ int main() {
     }
     return 0;
 }
+

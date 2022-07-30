@@ -41,15 +41,19 @@ int inserir(char *titulo, char *autor, int numeros_pag, int *linhas) {
 
 int listar(int linhas) {
     //lista os livros
-    char infLivro[50];
+    char infLivro[linhas][50];
     int vezes;
     FILE *arquivo;
-    printf("\nQuantidade: %d\n",linhas);
+    printf("\nQuantidade: %d\n\n",linhas);
     arquivo = fopen("database.txt", "rt");
     //lê o as linhas do arquivo e os lista livros
-    for (int i=0; i < linhas; i++) {
-        fgets(infLivro,50,arquivo);
-        printf("%d - %s",i+1, infLivro);
+    for (int i=0; i<linhas; i++) {
+        //loop para mostrar os livros
+        printf(" %d - ",i+1);
+        //lê a linha do arquivo
+        fgets(infLivro[i],50,arquivo);
+        //e mostra formatado com a funcao mostrarLivro
+        mostrarLivro(infLivro[i]);
     }
     fclose(arquivo);
 }
@@ -82,7 +86,7 @@ int buscar(char *pesquisa,int linhas) {
         //se o count for igual ao tamanho do input do usuário então o titulo tem todas as letras digitados pelo usuario
         if (count == strlen(pesquisa)) {
             //mostra as informações do livro encontrado e incrementa a variavel encontrados
-            printf("%s", palavraLinha);
+            mostrarLivro(palavraLinha);
             encontrados++;
         }
     }
@@ -139,11 +143,32 @@ int remover(char *titulo,int *linhas) {
             fprintf(f, "%s",copiaArquivo[i]);
         }
         fclose(f);
-        puts("removido com sucesso");
+        puts("------- removido com sucesso ------");
     } else {
         //caso removeu estiver falso, o livro nao foi encontrado e printa o erro na tela
-        puts("livro nao encontrado");
+        puts("---------- livro nao foi removido, pois nao foi encontrado na base de dados --------");
     }
     return 0;
 }
+
+void mostrarLivro(char *infLivro) {
+        int j = 0;
+        for(j;infLivro[j]!=',';j++) {
+            printf("%c",infLivro[j]);
+        }
+        j++;
+        printf(", ");
+        printf("autor:");
+        for(j;infLivro[j]!=',';j++) {
+            printf("%c",infLivro[j]);
+        }
+        j++;
+        printf(", ");
+        printf("paginas:");
+        for(j;infLivro[j]!=',';j++) {
+            printf("%c",infLivro[j]);
+        }
+        printf("\n");
+}
+
 
