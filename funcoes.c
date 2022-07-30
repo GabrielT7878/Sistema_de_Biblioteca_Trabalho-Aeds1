@@ -21,7 +21,7 @@ int verificarArquivo() {
 int menu() {
     //mostrar menu e retorna a opção selecionada
     int opcao;
-    setlocale(LC_ALL, "Portuguese");
+    setlocale(LC_ALL, "");
     printf("\n Digite um numero:\n 1 - Buscar um  Livro \n 2 - Adicionar um Livro \n 3 - Remover um Livro \n 4 - Listar todos os Livros \n 5 - Sair do programa\n");
     limpar_input();
     scanf("%d", &opcao);
@@ -32,8 +32,61 @@ int menu() {
 int inserir(char *titulo, char *autor, int numeros_pag, int *linhas) {
     //insere livro e retorna o numero de linhas 
     FILE *arquivo;
+    char copiaArquivo[(*linhas)][50];
+    char aux[50];
+    int count;
+    bool teste = false;
+    arquivo = fopen("database.txt", "r");
+    //preenche a matriz com os livros da base de dados
+    for(int i=0;i<(*linhas);i++) {
+        fgets(copiaArquivo[i],50,arquivo);
+    }
+    //fecha o arquivo
+    fclose(arquivo);
+    //verifica se o titulo já existe na base de dados 
+    for(int i=0;i<(*linhas);i++) {
+        //reseta a string aux
+        memset(aux,0,50);
+        //copia apenas o titulo para a string aux
+        for (int j=0;copiaArquivo[i][j] != ',';j++) {
+            aux[j] = copiaArquivo[i][j];
+        }
+        //compara a string aux com o input do usuário
+        if(strcmp(aux,titulo) == 0) {
+            puts("O livro já existe da base de dados!");
+            return 0;
+        }
+    }
+    //reseta o arquivo
+    arquivo = fopen("database.txt", "w");
+    fclose(arquivo);
+    //abre o arquivo para escrita
     arquivo = fopen("database.txt", "a");
-    fprintf(arquivo, "%s, %s, %d,\n", titulo, autor, numeros_pag);
+    if((*linhas) == 0) {
+        fprintf(arquivo,"%s, %s, %d,\n",titulo, autor, numeros_pag);
+        fclose(arquivo);
+        (*linhas)++;
+        return 0;
+    }
+    //escreve no arquivo
+    for(int i = 0; i < (*linhas); i++) {
+        //copia apenas o titulo para a string aux
+        memset(aux, 0, 50);
+        for (int j=0;copiaArquivo[i][j] != ',';j++) {
+            aux[j] = copiaArquivo[i][j];
+        }
+        //verifica se o input  do usuario é menor que o titulo atual
+        if(strcmp(titulo,aux) < 0 && !teste) {
+            fprintf(arquivo,"%s, %s, %d,\n",titulo,autor,numeros_pag);
+            fprintf(arquivo,"%s",copiaArquivo[i]);
+            teste = true;
+        }else {
+            fprintf(arquivo,"%s",copiaArquivo[i]);
+        }
+    }
+    if(!teste) {
+        fprintf(arquivo,"%s, %s, %d,\n",titulo,autor,numeros_pag);
+    }
     fclose(arquivo);
     (*linhas)++;
     return 0;
@@ -101,6 +154,7 @@ int buscar(char *pesquisa,int linhas) {
 }
 
 int remover(char *titulo,int *linhas) {
+    setlocale(LC_ALL, "");
     //remove Livro e retorna a quantidade de linhas
     FILE *arquivo;
     bool removeu = false;

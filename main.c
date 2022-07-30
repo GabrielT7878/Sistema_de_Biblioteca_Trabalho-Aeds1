@@ -19,11 +19,11 @@ int main() {
     char titulo[50], autor[50];
     //verificar a quantidade de linhas do arquivo
     int linhas = verificarArquivo();
-
+    setlocale(LC_ALL, "");
     while (!sair) {
         opcao = menu();
         if (opcao < 1 || opcao > 5) {
-            printf("Opï¿½ï¿½o invï¿½lida!");
+            printf("Opção Inválida!");
             continue;
         }
         switch (opcao) {
@@ -44,7 +44,7 @@ int main() {
             limpar_input();
             gets(titulo);
             while (strlen(titulo) > 50 ) {
-            printf("\n O titulo ï¿½ longo demais\n");
+            printf("\n O titulo é longo demais\n");
             printf("Digite o titulo do livro:\n");
             limpar_input();
             scanf("%s", titulo);
@@ -52,7 +52,7 @@ int main() {
             printf("Digite o nome do autor:\n");
             limpar_input();
             gets(autor);
-            printf("Digite o numero de paginas:\n");
+            printf("Digite o numero de páginas:\n");
             scanf("%d", &num_paginas);
             inserir(titulo, autor, num_paginas,&linhas);
             break;
@@ -69,7 +69,7 @@ int main() {
         case 4:
             //listar livros
             limpar_tela();
-            printf("Os livros presentes na biblioteca sï¿½o:\n");
+            printf("Os livros presentes na biblioteca são:\n");
             listar(linhas);
             break;
         case 5:
